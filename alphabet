@@ -1,0 +1,15 @@
+vowels = ['a', 'e', 'i', 'o', 'u']
+
+identical_vowel = { 'i' : 'i, î, ï, y, ÿ', 
+                    'y' : 'u, uë, û, ü, eu', 
+                    'e' : 'es, et, e, é, è, ê, ë, ai, eiz, er',
+                    'o' :'o, ô, au, eau',
+                    'u' : 'ou, oû, où, aou, aoû',
+                    'a' : 'a, à, â, emm'}
+
+identical_consonant = {'f' : 'f, ff, ph',
+                       'k' : 'c, cc, k, qu, ch',
+                       's' : 's, ss, sc, se, c, ç, ti, x',
+                       'z' : 'z, s',
+                       't' : 'tte',
+                       'j' : 'ge'}
