@@ -1,0 +1,10 @@
+from nltk.tokenize import SyllableTokenizer
+from nltk import word_tokenize
+
+verlan = 'cimer'
+
+if verlan[-1] == 'u':
+   verlan = verlan[:-1]
+
+ssp = SyllableTokenizer()
+syllables = ssp.tokenize(verlan)
