@@ -1,0 +1,29 @@
+class TreeNode:
+    def __init__(self, value):
+        self.value = value
+        self.children = []
+
+def create_tree_from_list(lst):
+    if not lst:
+        return None
+
+    root = TreeNode(lst[0])
+    stack = [root]
+    current_node = root
+
+    for value in lst[1:]:
+        new_node = TreeNode(value)
+
+        if current_node.children:
+            current_node.children[-1].children.append(new_node)
+        else:
+            current_node.children.append(new_node)
+
+        if value != ')':
+            stack.append(new_node)
+        else:
+            stack.pop()
+
+        current_node = stack[-1]
+
+    return root
