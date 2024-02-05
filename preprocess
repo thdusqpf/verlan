@@ -1,10 +1,40 @@
+!pip install unidecode
+
+import pandas as pd
 from nltk.tokenize import SyllableTokenizer
 from nltk import word_tokenize
+import unicodedata
+from unidecode import unidecode
 
-verlan = 'cimer'
+def remove_stopword(text):
+  ssp = SyllableTokenizer()
+  syllables = ssp.tokenize(text)
+  first_index = 0
+  last_index = len(syllables)-1
+  
+  for i in (first_index, last_index):
+    if (syllables[i][-1] == 'u'):
+      syllables[i] = syllables[i].strip('u')
+  return syllables
 
-if verlan[-1] == 'u':
-   verlan = verlan[:-1]
+def remove_accents(text):
+    if isinstance(text, str):
+        return unidecode(text)
+    else:
+        return text
 
-ssp = SyllableTokenizer()
-syllables = ssp.tokenize(verlan)
+def handle_identical_pronounciation(text):
+  possible_word = []
+  text = text.lower()
+  ssp = SyllableTokenizer()
+  syllables = ssp.tokenize(text)
+  for alphabet in text:
+    for key in identical_pronunciation.keys():
+      if alphabet == key:
+        for value in identical_pronunciation[key]:
+          possible_word.append(text.replace(alphabet, value))
+  print(possible_word)
+
+verlan_without_accent = remove_accents(verlan)
+remove_stopword(verlan_without_accent)
+handle_identical_pronounciation(verlan_without_accent)
