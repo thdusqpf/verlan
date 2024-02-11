@@ -1,0 +1,26 @@
+def levenshtein_distance(s, t):
+    lenth_s = len(s)
+    lenth_t = len(t)
+
+    previous_row = [0] * (lenth_t + 1)
+    current_row = [0] * (lenth_t + 1)
+
+    for i in range(lenth_t + 1):
+        previous_row[i] = i
+
+    for i in range(lenth_s):
+        current_row[0] = i + 1
+
+        for j in range(lenth_t):
+            deletion_cost = previous_row[j + 1] + 1
+            insertion_cost = current_row[j] + 1
+            if s[i] == t[j]:
+                substitution_cost = previous_row[j]
+            else:
+                substitution_cost = previous_row[j] + 1
+
+            current_row[j + 1] = min(deletion_cost, insertion_cost, substitution_cost)
+
+        previous_row, current_row = current_row, previous_row
+
+    return previous_row[lenth_t]
