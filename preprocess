@@ -6,14 +6,23 @@ from nltk import word_tokenize
 import unicodedata
 from unidecode import unidecode
 
-def remove_stopword(text):
+verlan = 'fausétu'
+
+with open("alphabet.txt", "r") as file:
+    identical_pronunciation = file.read()
+
+def tokenize(text):
   ssp = SyllableTokenizer()
   syllables = ssp.tokenize(text)
+
+def remove_stopword(text):
   first_index = 0
   last_index = len(syllables)-1
-  
+  last_alphabet_of_syllable = syllables[i][-1]
+
+  tokenize(text)
   for i in (first_index, last_index):
-    if (syllables[i][-1] == 'u'):
+    if (last_alphabet_of_syllable == 'u'):
       syllables[i] = syllables[i].strip('u')
   return syllables
 
@@ -26,8 +35,8 @@ def remove_accents(text):
 def handle_identical_pronounciation(text):
   possible_word = []
   text = text.lower()
-  ssp = SyllableTokenizer()
-  syllables = ssp.tokenize(text)
+
+  tokenize(text)
   for alphabet in text:
     for key in identical_pronunciation.keys():
       if alphabet == key:
@@ -36,5 +45,5 @@ def handle_identical_pronounciation(text):
   print(possible_word)
 
 verlan_without_accent = remove_accents(verlan)
-remove_stopword(verlan_without_accent)
-handle_identical_pronounciation(verlan_without_accent)
+verlan_without_accent_stopword = remove_stopword(verlan_without_accent)
+preprocessed_verlan = handle_identical_pronounciation(verlan_without_accent_stopword)
