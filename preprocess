@@ -5,26 +5,9 @@ from nltk.tokenize import SyllableTokenizer
 from nltk import word_tokenize
 import unicodedata
 from unidecode import unidecode
+#import alphabet
 
 verlan = 'fausétu'
-
-with open("alphabet.txt", "r") as file:
-    identical_pronunciation = file.read()
-
-def tokenize(text):
-  ssp = SyllableTokenizer()
-  syllables = ssp.tokenize(text)
-
-def remove_stopword(text):
-  first_index = 0
-  last_index = len(syllables)-1
-  last_alphabet_of_syllable = syllables[i][-1]
-
-  tokenize(text)
-  for i in (first_index, last_index):
-    if (last_alphabet_of_syllable == 'u'):
-      syllables[i] = syllables[i].strip('u')
-  return syllables
 
 def remove_accents(text):
     if isinstance(text, str):
@@ -32,11 +15,30 @@ def remove_accents(text):
     else:
         return text
 
-def handle_identical_pronounciation(text):
-  possible_word = []
-  text = text.lower()
+def tokenize(text):
+  ssp = SyllableTokenizer()
+  return ssp.tokenize(text)
 
-  tokenize(text)
+def remove_stopword(text):
+  syllables = tokenize(text)
+  first_index = 0
+  last_index = len(syllables)-1
+
+  for i in (first_index, last_index):
+    last_alphabet_of_syllable = syllables[i][-1]
+    number_of_vowels = sum(word.count(vowel))
+
+    if (number_of_vowels>1 and last_alphabet_of_syllable == 'u'):
+      syllables[i] = syllables[i].strip('u')
+  return syllables
+
+def switch_syllables(text):
+  text.insert(0, text[-1])
+  return text[:-1]
+
+def handle_identical_pronounciation(text):
+  possible_word_tree = []
+
   for alphabet in text:
     for key in identical_pronunciation.keys():
       if alphabet == key:
@@ -46,4 +48,6 @@ def handle_identical_pronounciation(text):
 
 verlan_without_accent = remove_accents(verlan)
 verlan_without_accent_stopword = remove_stopword(verlan_without_accent)
-preprocessed_verlan = handle_identical_pronounciation(verlan_without_accent_stopword)
+switched_verlan_without_accent_stopword = switch_syllables(verlan_without_accent_stopword)
+print(switched_verlan_without_accent_stopword)
+preprocessed_verlan = handle_identical_pronounciation(switched_verlan_without_accent_stopword)
