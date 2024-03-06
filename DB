@@ -1,0 +1,8 @@
+import pandas as pd
+
+df = pd.read_csv('/content/drive/MyDrive/VerlanObjects.csv')
+
+df = df.drop(['English', 'pronounce'], axis=1)
+df = pd.concat([df, df['Verlan'].str.split(',' or 'ou', expand=True)], axis=1).drop('Verlan', axis=1)
+df['count'] = 0
+df.to_csv('verlan_objects', index='None')
