@@ -1,11 +1,11 @@
 import pandas as pd
 
 df = pd.read_csv('/content/drive/MyDrive/VerlanObjects.csv')
-
 df = df.drop(['English', 'pronounce'], axis=1)
 df = pd.concat([df, df['Original'].str.split(',' or ' ou ', expand=True)], axis=1).drop('Original', axis=1)
 df = df.rename(columns={0: 'Original_1', 1: 'Orginal_2'})
 df = pd.concat([df, df['Verlan'].str.split(',' or ' ou ', expand=True)], axis=1).drop('Verlan', axis=1)
 df = df.rename(columns={0: 'Verlan_1', 1: 'Verlan_2', 2:'Verlan_3'})
 df['count'] = 0
+df = df.drop_duplicates()
 df.to_csv('verlan_objects', index='None')
