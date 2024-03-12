@@ -7,7 +7,7 @@ import unicodedata
 from unidecode import unidecode
 #import alphabet
 
-verlan = 'fausétu'
+verlan = input()
 
 def remove_accents(text):
     if isinstance(text, str):
