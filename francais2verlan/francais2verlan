@@ -1,0 +1,52 @@
+import pandas as pd
+from nltk.tokenize import SyllableTokenizer
+from nltk import word_tokenize
+from unidecode import unidecode
+
+# 파일 내용을 한 번에 읽어들임
+with open("/Users/shinseohyunn/Desktop/francais2verlan/francais.csv", "r") as file:
+    francais_lines = file.readlines()
+
+def remove_accents(text):
+    if isinstance(text, str):
+        return unidecode(text)
+    else:
+        return text
+
+def tokenize(text):
+    ssp = SyllableTokenizer()
+    return ssp.tokenize(text)
+
+def switch_syllables(text):
+    text.insert(0, text[-1])
+    return text[:-1]
+
+def handle_identical_pronounciation(text):
+    lst = list(text)
+    i = 0
+    while i < len(lst) - 1:
+        if lst[i] == lst[i+1]:
+            text = lst[:i] + lst[i+1:]
+            lst = list(text)  # 리스트 업데이트
+        else:
+            i += 1
+    text = ''.join(text)
+    return text
+
+# 새로운 데이터프레임 생성
+df = pd.DataFrame(columns=range(2))
+
+# 파일 내용을 한 줄씩 처리하고 데이터프레임에 추가
+for line in francais_lines:
+    # 문자열 처리
+    francais1 = remove_accents(line.strip("\n"))
+    francais2 = tokenize(francais1)
+    francais3 = switch_syllables(francais2)
+    francais4 = handle_identical_pronounciation(francais3)
+    
+    # 데이터프레임에 행 추가
+    df.loc[len(df)] = [francais1, francais4]
+
+# 결과 출력
+print(df)
+df.to_csv("/Users/shinseohyunn/Desktop/francais2verlan/verlans.csv")
